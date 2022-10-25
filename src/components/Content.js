@@ -78,6 +78,10 @@ function Content(props) {
   const favorites = localStorage.getItem('favorites');
 
   useEffect(() => {
+    if (!favorites) localStorage.setItem('favorites', JSON.stringify([]));
+  }, []);
+
+  useEffect(() => {
     props.getChannelName('');
     axios.get('https://iptv-org.github.io/iptv/channels.json').then((res) => {
       setStreams(

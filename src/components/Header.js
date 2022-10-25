@@ -73,7 +73,7 @@ function Header(props) {
   return (
     <Box className={!matchesLaptop ? classes.header : classes.mobileHeader}>
       <Typography variant="h5" className={classes.logo}>
-        LOGO
+        TvNow
       </Typography>
       <Paper
         component="form"

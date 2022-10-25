@@ -38,6 +38,10 @@ const theme = createTheme({
           justifyContent: 'center',
           fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         },
+        video: {
+          height: '20rem',
+          width: '35rem',
+        },
         a: {
           textDecoration: 'none',
         },

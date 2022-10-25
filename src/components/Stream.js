@@ -72,10 +72,10 @@ function Stream(props) {
         <Header getIsOpen={props.getIsOpen} />
         <Box className={classes.stream}>
           <ReactHlsPlayer
-            src={stream.url}
+            src={stream.url && stream.url.replace('http://', 'https://')}
             autoPlay={true}
             controls={true}
-            height="100%"
+            height="90%"
             width="70%"
           />
         </Box>
@@ -83,9 +83,9 @@ function Stream(props) {
           variant="h6"
           sx={{
             color: '#fff',
-            fontSize: `${!matchesDesktop ? '1.8rem' : '1rem'}`,
+            fontSize: `${!matchesDesktop ? '1.8rem' : '0.9rem'}`,
             textAlign: 'center',
-            marginTop: '1.5rem',
+            marginTop: '0rem',
             fontWeight: 900,
             width: '80%',
           }}
