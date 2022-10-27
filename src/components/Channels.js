@@ -83,7 +83,7 @@ function Channels(props) {
               ? { borderRadius: '16px', width: 230, height: 120 }
               : !matchesLaptop || !matchesTablet
               ? { borderRadius: '16px', width: 150, height: 80 }
-              : { borderRadius: '16px', width: 130, height: 70 }
+              : { borderRadius: '16px', width: 110, height: 70 }
           }
         >
           <FiCardActionArea>
@@ -102,13 +102,13 @@ function Channels(props) {
                   fontSize: '1.5rem',
                   fontWeight: 900,
                 }
-              : !matchesLaptop
+              : !matchesLaptop || !matchesTablet
               ? {
                   fontSize: '0.9rem',
                   fontWeight: 900,
                 }
               : {
-                  fontSize: '0.8rem',
+                  fontSize: '0.7rem',
                   fontWeight: 900,
                 }
           }

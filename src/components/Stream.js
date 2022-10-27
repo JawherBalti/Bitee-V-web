@@ -46,6 +46,7 @@ function Stream(props) {
   const theme = useTheme();
   const matchesLaptop = useMediaQuery(theme.breakpoints.down('laptop'));
   const matchesDesktop = useMediaQuery(theme.breakpoints.down('desktop'));
+  // const matchesTablet = useMediaQuery(theme.breakpoints.down('tablet'));
   const classes = useStyles();
 
   const [stream, setStream] = useState({});
@@ -96,14 +97,6 @@ function Stream(props) {
           browser (Not Recommended On Other Websites)
         </Typography>
       </Box>
-      <footer
-        style={{
-          fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
-          fontWeight: '900',
-        }}
-      >
-        &copy; All Rights Reserved 2022
-      </footer>
     </Box>
   );
 }

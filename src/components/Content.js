@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: 'repeat(4, 1fr)',
     gap: '2rem',
     alignItems: 'center',
-    height: '90%',
+    height: '80%',
   },
 
   desktopContent: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
     alignItems: 'center',
-    height: '90%',
+    height: '80%',
     width: '100vw',
   },
 });
@@ -58,7 +58,7 @@ function Content(props) {
   const theme = useTheme();
   const classes = useStyles();
   const matchesLaptop = useMediaQuery(theme.breakpoints.down('laptop'));
-  const matchesDesktop = useMediaQuery(theme.breakpoints.down('desktop'));
+  // const matchesDesktop = useMediaQuery(theme.breakpoints.down('desktop'));
 
   const [streams, setStreams] = useState([]);
   const [searchedChannel, setSearchedChannel] = useState('');
@@ -66,9 +66,9 @@ function Content(props) {
   const [filterededChannels, setFilteredChannels] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [channelsPerPage, setChannelsPerPage] = useState(12);
+  const [channelsPerPage] = useState(12);
   const [itemsList, setItemsList] = useState(0);
-  const [pageNumberLimit, setpageNumberLimit] = useState(5);
+  const [pageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
@@ -246,14 +246,6 @@ function Content(props) {
           handlePrevbtn={handlePrevbtn}
         ></Pagination>
       </Box>
-      <footer
-        style={{
-          fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
-          fontWeight: '900',
-        }}
-      >
-        &copy; All Rights Reserved 2022
-      </footer>
     </Box>
   );
 }

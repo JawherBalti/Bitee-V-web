@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     position: 'absolute',
     zIndex: 99,
     maxHeight: '100vh',
-    width: '35%',
+    width: '55%',
     overflowY: 'scroll',
     // -ms-overflow-style: "none", /* IE and Edge */
     scrollbarWidth: 'none',

@@ -16,13 +16,14 @@ const theme = createTheme({
           margin: 0,
           fontFamily:
             '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
-          backgroundSize: '100vw',
+          // backgroundSize: '100vw',
           width: '100%',
-          overflow: 'hidden',
+          overflow: 'auto',
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.9)),url(${bg})`,
-          backgroundSize: 'cover',
+          backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
         },
         main: {
           display: 'flex',
@@ -38,10 +39,10 @@ const theme = createTheme({
           justifyContent: 'center',
           fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         },
-        video: {
-          height: '20rem',
-          width: '35rem',
-        },
+        // video: {
+        //   height: '20rem',
+        //   width: '35rem',
+        // },
         a: {
           textDecoration: 'none',
         },

@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     backgroundImage: 'linear-gradient(to top, #000, #1b1b1bbf, #000)',
     zIndex: 99,
     height: '100%',
-    width: '35%',
+    width: '55%',
     overflowY: 'scroll',
     // -ms-overflow-style: "none", /* IE and Edge */
     scrollbarWidth: 'none',
