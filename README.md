@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Install dependencies
 
-### `npm start`
+### `npm install`
 
 ## Start the application in development mode
 
