@@ -10,6 +10,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `npm start`
 
-#Live Application
+## Live Application
 
 https://tvnow.netlify.app
