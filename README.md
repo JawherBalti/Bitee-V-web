@@ -12,4 +12,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Live Application
 
-https://tvnow.netlify.app
+https://bitee-v.netlify.app
