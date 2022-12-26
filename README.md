@@ -13,3 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Live Application
 
 https://bitee-v.netlify.app
+
+## Mobile version repo
+
+https://github.com/JawherBalti/iptvMobile
