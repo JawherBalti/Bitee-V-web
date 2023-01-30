@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import List from '@mui/material/List';
-import GradeIcon from '@mui/icons-material/Grade';
+import React, { useState } from "react";
+import List from "@mui/material/List";
+import GradeIcon from "@mui/icons-material/Grade";
 import {
   Box,
   Button,
@@ -8,63 +8,64 @@ import {
   ListItemButton,
   ListItemText,
   Typography,
-} from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+} from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles({
   sidebar: {
-    backgroundImage: 'linear-gradient(to top, #000, #1b1b1bbf, #000)',
+    backgroundImage: "linear-gradient(to top, #000, #1b1b1bbf, #000)",
     flex: 0.2,
-    maxHeight: '100vh',
-    overflowY: 'auto',
+    maxHeight: "100vh",
+    overflowY: "auto",
     // -ms-overflow-style: "none", /* IE and Edge */
-    scrollbarWidth: 'none',
-    '&::-webkit-scrollbar': {
-      display: 'none',
+    scrollbarWidth: "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
     },
   },
   mobileSidebar: {
-    position: 'absolute',
-    backgroundImage: 'linear-gradient(to top, #000, #1b1b1bbf, #000)',
+    position: "absolute",
+    backgroundImage: "linear-gradient(to top, #000, #1b1b1bbf, #000)",
     zIndex: 99,
-    height: '100%',
-    width: '55%',
-    overflowY: 'scroll',
+    height: "100%",
+    width: "55%",
+    overflowY: "scroll",
     // -ms-overflow-style: "none", /* IE and Edge */
-    scrollbarWidth: 'none',
+    scrollbarWidth: "none",
     animation: `$showSidebar 500ms ease-in-out`,
-    '&::-webkit-scrollbar': {
-      display: 'none',
+    "&::-webkit-scrollbar": {
+      display: "none",
     },
   },
 
-  '@keyframes showSidebar': {
-    '0%': {
+  "@keyframes showSidebar": {
+    "0%": {
       opacity: 0,
-      transform: 'translateX(-200%)',
+      transform: "translateX(-200%)",
     },
-    '100%': {
+    "100%": {
       opacity: 1,
-      transform: 'translateX(0)',
+      transform: "translateX(0)",
     },
   },
 });
 
 function StreamInfo(props) {
   const theme = useTheme();
-  const matchesLaptop = useMediaQuery(theme.breakpoints.down('laptop'));
-  const matchesDesktop = useMediaQuery(theme.breakpoints.down('desktop'));
+  const matchesLaptop = useMediaQuery(theme.breakpoints.down("laptop"));
+  const matchesDesktop = useMediaQuery(theme.breakpoints.down("desktop"));
 
   const classes = useStyles();
 
   const navigate = useNavigate();
 
   const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState({});
 
   const addToFavorites = (channelObj) => {
     let channel = favorites.find((ch) => ch.name === channelObj.name);
@@ -85,12 +86,12 @@ function StreamInfo(props) {
   };
 
   const setFavorites = (channels) => {
-    localStorage.setItem('favorites', JSON.stringify(channels));
+    localStorage.setItem("favorites", JSON.stringify(channels));
   };
 
   const getFavorites = () => {
-    if (localStorage.getItem('favorites') != null) {
-      return JSON.parse(localStorage.getItem('favorites'));
+    if (localStorage.getItem("favorites") != null) {
+      return JSON.parse(localStorage.getItem("favorites"));
     } else {
       return [];
     }
@@ -99,6 +100,7 @@ function StreamInfo(props) {
   const favorites = getFavorites();
 
   useEffect(() => {
+    setSelectedChannel(JSON.parse(localStorage.getItem("selectedChannel")));
     favorites.some((favorite) => favorite.name === props.streamInfo.name)
       ? setIsFavorite(true)
       : setIsFavorite(false);
@@ -113,19 +115,19 @@ function StreamInfo(props) {
       <List
         sx={{
           // hover states
-          '& .MuiListItemButton-root:hover': {
-            bgcolor: '#7c00006c',
-            '&, & .MuiListItemIcon-root': {
-              color: 'pink',
+          "& .MuiListItemButton-root:hover": {
+            bgcolor: "#7c00006c",
+            "&, & .MuiListItemIcon-root": {
+              color: "pink",
             },
           },
         }}
       >
-        <ListItemButton onClick={() => navigate('/')}>
+        <ListItemButton onClick={() => navigate("/")}>
           <ArrowBackIosNewIcon
             sx={{
-              color: '#fff',
-              fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
+              color: "#fff",
+              fontSize: `${!matchesDesktop ? "1.5rem" : "1rem"}`,
               fontWeight: 900,
             }}
           />
@@ -133,8 +135,8 @@ function StreamInfo(props) {
             primary=" Back"
             disableTypography
             sx={{
-              color: '#fff',
-              fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
+              color: "#fff",
+              fontSize: `${!matchesDesktop ? "1.5rem" : "1rem"}`,
               fontWeight: 900,
             }}
           />
@@ -143,87 +145,93 @@ function StreamInfo(props) {
       <Typography
         component="p"
         sx={{
-          fontSize: `${!matchesDesktop ? '1.7rem' : '1rem'}`,
+          fontSize: `${!matchesDesktop ? "1.7rem" : "1rem"}`,
           fontWeight: 900,
-          ml: '1rem',
-          mb: '1rem',
+          ml: "1rem",
+          mb: "1rem",
         }}
       >
-        Channel Name:{' '}
-        {props.streamInfo.name && (
+        Channel Name:{" "}
+        {selectedChannel.name && (
           <Typography
             component="span"
             sx={{
-              fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
+              fontSize: `${!matchesDesktop ? "1.5rem" : "1rem"}`,
               fontWeight: 900,
-              mb: '1rem',
+              mb: "1rem",
             }}
           >
-            {props.streamInfo.name}
+            {selectedChannel.name}
           </Typography>
         )}
+      </Typography>
+
+      <Typography
+        component="p"
+        sx={{
+          fontSize: `${!matchesDesktop ? "1.7rem" : "1rem"}`,
+          fontWeight: 900,
+          ml: "1rem",
+        }}
+      >
+        Country: <br />
+        <Typography
+          component="p"
+          sx={{
+            fontSize: `${!matchesDesktop ? "1.7rem" : "1rem"}`,
+            fontWeight: 900,
+            ml: "1rem",
+            mb: "1rem",
+          }}
+        >
+          <ListItem
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <ListItemText
+              disableTypography
+              sx={{
+                fontSize: `${!matchesDesktop ? "1.5rem" : "1rem"}`,
+                display: "list-item",
+              }}
+            >
+              {selectedChannel.countryName}
+            </ListItemText>
+          </ListItem>
+        </Typography>
       </Typography>
       <Typography
         component="p"
         sx={{
-          fontSize: `${!matchesDesktop ? '1.7rem' : '1rem'}`,
+          fontSize: `${!matchesDesktop ? "1.7rem" : "1rem"}`,
           fontWeight: 900,
-          ml: '1rem',
-          mb: '1rem',
+          ml: "1rem",
+          mb: "1rem",
         }}
       >
-        Languages:{' '}
+        Languages:{" "}
         <ListItem
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          {props.streamInfo.languages &&
-            props.streamInfo.languages.map((language) => (
+          {selectedChannel.languages &&
+            selectedChannel.languages.map((language) => (
               <ListItemText
                 key={language.name}
                 disableTypography
                 sx={{
-                  fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
-                  display: 'list-item',
-                  ml: '1rem',
+                  fontSize: `${!matchesDesktop ? "1.5rem" : "1rem"}`,
+                  display: "list-item",
+                  ml: "1rem",
                 }}
               >
-                {language.name}{' '}
-              </ListItemText>
-            ))}
-        </ListItem>
-      </Typography>
-      <Typography
-        component="p"
-        sx={{
-          fontSize: `${!matchesDesktop ? '1.7rem' : '1rem'}`,
-          fontWeight: 900,
-          ml: '1rem',
-        }}
-      >
-        Countries:{' '}
-        <ListItem
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-          }}
-        >
-          {props.streamInfo.countries &&
-            props.streamInfo.countries.map((country) => (
-              <ListItemText
-                key={country.name}
-                disableTypography
-                sx={{
-                  fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
-                  display: 'list-item',
-                  ml: '1rem',
-                }}
-              >
-                {country.name}
+                {language.toUpperCase()}
               </ListItemText>
             ))}
         </ListItem>
@@ -231,47 +239,47 @@ function StreamInfo(props) {
 
       {isFavorite ? (
         <Button
-          onClick={() => removeFromFavorites(props.streamInfo)}
+          onClick={() => removeFromFavorites(selectedChannel)}
           sx={{
-            mb: '1rem',
-            fontSize: `${!matchesDesktop ? '1.5rem' : '1rem'}`,
-            textTransform: 'capitalize',
-            marginLeft: '0.5rem',
-            backgroundColor: '#7c00006c',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#7c00006c',
+            mb: "1rem",
+            fontSize: `${!matchesDesktop ? "1.5rem" : "1rem"}`,
+            textTransform: "capitalize",
+            marginLeft: "0.5rem",
+            backgroundColor: "#7c00006c",
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: "#7c00006c",
             },
           }}
         >
           <GradeIcon
-            fontSize={!matchesDesktop ? 'large' : 'small'}
+            fontSize={!matchesDesktop ? "large" : "small"}
             sx={{
-              color: 'yellow',
+              color: "yellow",
             }}
           />
           Remove From Favorites
         </Button>
       ) : (
         <Button
-          onClick={() => addToFavorites(props.streamInfo)}
+          onClick={() => addToFavorites(selectedChannel)}
           sx={{
-            fontSize: `${!matchesDesktop ? '1.5rem' : '0.9rem'}`,
-            mb: '1rem',
+            fontSize: `${!matchesDesktop ? "1.5rem" : "0.9rem"}`,
+            mb: "1rem",
             fontWeight: 900,
-            textTransform: 'capitalize',
-            marginLeft: '0.5rem',
-            backgroundColor: '#7c00006c',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#7c00006c',
+            textTransform: "capitalize",
+            marginLeft: "0.5rem",
+            backgroundColor: "#7c00006c",
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: "#7c00006c",
             },
           }}
         >
           <GradeIcon
-            fontSize={!matchesDesktop ? 'large' : 'small'}
+            fontSize={!matchesDesktop ? "large" : "small"}
             sx={{
-              color: '#fff',
+              color: "#fff",
             }}
           />
           Add To Favorites

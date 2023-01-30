@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
-import Content from './components/Content';
-import SideBar from './components/SideBar';
-import { Route, Routes } from 'react-router-dom';
-import Stream from './components/Stream';
-import StreamInfo from './components/StreamInfo';
-import { Box } from '@mui/material';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import React, { useState } from "react";
+import Content from "./components/Content";
+import SideBar from "./components/SideBar";
+import { Route, Routes } from "react-router-dom";
+import Stream from "./components/Stream";
+import StreamInfo from "./components/StreamInfo";
+import { Box } from "@mui/material";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const useStyles = makeStyles({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh",
   },
 });
 
 function App() {
   const classes = useStyles();
 
-  const [category, setCategory] = useState('');
-  const [channelName, setChannelName] = useState('');
+  const [category, setCategory] = useState("");
+  const [channelName, setChannelName] = useState("");
   const [streamInfo, setStreamInfo] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-
-  // useEffect(() => {
-  //   setCurrentUrl(window.location.href.split('/')[3]);
-  //   console.log(currentUrl);
-  // }, [currentUrl]);
 
   const getChannelName = (channel) => {
     setChannelName(channel);
@@ -47,7 +42,7 @@ function App() {
   return (
     <Box className={classes.container}>
       <main>
-        {channelName === '' ? (
+        {channelName === "" ? (
           <SideBar isOpen={isOpen} getCategory={getCategory} />
         ) : (
           <StreamInfo isOpen={isOpen} streamInfo={streamInfo} />

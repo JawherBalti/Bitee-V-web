@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Channels from './Channels';
-import Header from './Header';
-import Pagination from './Pagination';
-import { Box } from '@mui/material';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Channels from "./Channels";
+import Header from "./Header";
+import Pagination from "./Pagination";
+import { Box } from "@mui/material";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles({
   contentContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    rowGap: '5rem',
+    display: "flex",
+    flexDirection: "column",
+    rowGap: "5rem",
     flex: 0.8,
-    marginTop: ' 0.55rem',
+    marginTop: " 0.55rem",
   },
 
   mobileContentContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    rowGap: '4rem',
+    display: "flex",
+    flexDirection: "column",
+    rowGap: "4rem",
     flex: 0.8,
-    marginTop: ' 0.55rem',
+    marginTop: " 0.55rem",
   },
 
   contentHeader: {
@@ -30,38 +30,40 @@ const useStyles = makeStyles({
   },
 
   content: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '2rem',
-    alignItems: 'center',
-    height: '80%',
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "2rem",
+    alignItems: "center",
+    height: "80%",
   },
 
   desktopContent: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    alignItems: 'center',
-    height: '90%',
-    width: '100vw',
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    alignItems: "center",
+    height: "90%",
+    width: "100vw",
   },
 
   mobileContent: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    alignItems: 'center',
-    height: '80%',
-    width: '100vw',
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    alignItems: "center",
+    height: "80%",
+    width: "100vw",
   },
 });
 
 function Content(props) {
   const theme = useTheme();
   const classes = useStyles();
-  const matchesLaptop = useMediaQuery(theme.breakpoints.down('laptop'));
+  const matchesLaptop = useMediaQuery(theme.breakpoints.down("laptop"));
   // const matchesDesktop = useMediaQuery(theme.breakpoints.down('desktop'));
 
   const [streams, setStreams] = useState([]);
-  const [searchedChannel, setSearchedChannel] = useState('');
+  const [streamUrls, setStreamUrls] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [searchedChannel, setSearchedChannel] = useState("");
   const [searchedChannels, setSearchedChannels] = useState([]);
   const [filterededChannels, setFilteredChannels] = useState([]);
 
@@ -75,50 +77,71 @@ function Content(props) {
   const lastOrder = currentPage * channelsPerPage;
   const firstOrder = lastOrder - channelsPerPage;
 
-  const favorites = localStorage.getItem('favorites');
+  const favorites = localStorage.getItem("favorites");
 
   useEffect(() => {
-    if (!favorites) localStorage.setItem('favorites', JSON.stringify([]));
+    if (!favorites) localStorage.setItem("favorites", JSON.stringify([]));
   }, []);
 
   useEffect(() => {
-    props.getChannelName('');
-    axios.get('https://iptv-org.github.io/iptv/channels.json').then((res) => {
+    props.getChannelName("");
+
+    axios
+      .get("https://iptv-org.github.io/api/streams.json")
+      .then((res) => setStreamUrls(res.data))
+      .catch((err) => console.log(err));
+
+    axios
+      .get("https://iptv-org.github.io/api/countries.json")
+      .then((res) => setCountries(res.data))
+      .catch((err) => console.log(err));
+
+    axios.get("https://iptv-org.github.io/api/channels.json").then((res) => {
       setStreams(
-        res.data.filter((stream) =>
-          stream.categories.some((cat) => cat.name !== 'XXX')
-        )
+        res.data
+          .filter((stream) =>
+            stream.categories.some((cat) => cat.name !== "xxx")
+          )
+          .filter((stream) => stream.country !== "IL")
       );
-      if (props.category !== '') setSearchedChannel('');
-      if (props.category === 'Favorites') {
+      if (props.category !== "") setSearchedChannel("");
+      if (props.category === "Favorites") {
         setFilteredChannels(JSON.parse(favorites));
       } else {
         setFilteredChannels(
-          res.data.filter((stream) =>
-            stream.categories.some((cat) => cat.name === props.category)
-          )
+          res.data
+            .filter((stream) =>
+              stream.categories.some((cat) => cat.name === props.category)
+            )
+            .filter((stream) => stream.country !== "IL")
         );
       }
 
       setItemsList(
-        res.data.filter((stream) =>
-          stream.categories.some((cat) => cat.name !== 'XXX')
-        ).length
+        res.data
+          .filter((stream) =>
+            stream.categories.some((cat) => cat.name !== "xxx")
+          )
+          .filter((stream) => stream.country !== "IL").length
       );
 
-      if (props.category === '' || props.category === 'All') {
+      if (props.category === "" || props.category === "All") {
         setItemsList(
-          res.data.filter((stream) =>
-            stream.categories.some((cat) => cat.name !== 'XXX')
-          ).length
+          res.data
+            .filter((stream) =>
+              stream.categories.some((cat) => cat.name !== "xxx")
+            )
+            .filter((stream) => stream.country !== "IL").length
         );
-      } else if (props.category === 'Favorites')
+      } else if (props.category === "Favorites")
         setItemsList(JSON.parse(favorites).length);
       else
         setItemsList(
-          res.data.filter((stream) =>
-            stream.categories.some((cat) => cat.name === props.category)
-          ).length
+          res.data
+            .filter((stream) =>
+              stream.categories.some((cat) => cat.name === props.category)
+            )
+            .filter((stream) => stream.country !== "IL").length
         );
     });
     paginate(1);
@@ -180,22 +203,28 @@ function Content(props) {
           <Box
             className={!matchesLaptop ? classes.content : classes.mobileContent}
           >
-            {props.category === '' || props.category === 'All' ? (
+            {props.category === "" || props.category === "All" ? (
               <>
                 {streams.slice(firstOrder, lastOrder).map((stream) => (
                   <Channels
-                    key={stream.url}
-                    name={stream.name}
-                    logo={stream.logo}
+                    key={stream.id}
+                    streamInfo={stream}
+                    streamUrl={streamUrls}
+                    countries={countries}
                   />
                 ))}
               </>
-            ) : props.category === 'Favorites' ? (
+            ) : props.category === "Favorites" ? (
               <>
                 {filterededChannels
                   .slice(firstOrder, lastOrder)
                   .map((stream) => (
-                    <Channels name={stream.name} logo={stream.logo} />
+                    <Channels
+                      key={stream.id}
+                      streamInfo={stream}
+                      streamUrl={streamUrls}
+                      countries={countries}
+                    />
                   ))}
               </>
             ) : (
@@ -211,7 +240,12 @@ function Content(props) {
                       )
                   )
                   .map((stream) => (
-                    <Channels name={stream.name} logo={stream.logo} />
+                    <Channels
+                      key={stream.id}
+                      streamInfo={stream}
+                      streamUrl={streamUrls}
+                      countries={countries}
+                    />
                   ))}
               </>
             )}
@@ -230,7 +264,12 @@ function Content(props) {
                 );
               })
               .map((stream) => (
-                <Channels name={stream.name} logo={stream.logo} />
+                <Channels
+                  key={stream.id}
+                  streamInfo={stream}
+                  streamUrl={streamUrls}
+                  countries={countries}
+                />
               ))}
           </Box>
         )}
