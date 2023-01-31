@@ -65,7 +65,7 @@ function Content(props) {
   const [countries, setCountries] = useState([]);
   const [searchedChannel, setSearchedChannel] = useState("");
   const [searchedChannels, setSearchedChannels] = useState([]);
-  const [filterededChannels, setFilteredChannels] = useState([]);
+  const [filteredChannels, setFilteredChannels] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [channelsPerPage] = useState(12);
@@ -99,11 +99,11 @@ function Content(props) {
     axios.get("https://iptv-org.github.io/api/channels.json").then((res) => {
       setStreams(
         res.data
-          .filter((stream) =>
-            stream.categories.some((cat) => cat.name !== "xxx")
-          )
-          .filter((stream) => stream.country !== "IL")
+          .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
+          .filter((ch) => ch.country !== "IL")
+          .filter((ch) => ch.closed === null)
       );
+
       if (props.category !== "") setSearchedChannel("");
       if (props.category === "Favorites") {
         setFilteredChannels(JSON.parse(favorites));
@@ -113,30 +113,41 @@ function Content(props) {
             .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
             .filter((ch) => ch.country !== "IL")
             .filter((ch) => ch.closed === null)
+            .filter((stream) =>
+              stream.categories.some(
+                (cat) => cat === props.category.toLowerCase()
+              )
+            )
         );
       }
 
       setItemsList(
         res.data
           .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
-          .filter((stream) => stream.country !== "IL").length
+          .filter((stream) => stream.country !== "IL")
+          .filter((ch) => ch.closed === null).length
       );
 
       if (props.category === "" || props.category === "All") {
         setItemsList(
           res.data
             .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
-            .filter((stream) => stream.country !== "IL").length
+            .filter((stream) => stream.country !== "IL")
+            .filter((ch) => ch.closed === null).length
         );
       } else if (props.category === "Favorites")
         setItemsList(JSON.parse(favorites).length);
       else
         setItemsList(
           res.data
+            .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
+            .filter((stream) => stream.country !== "IL")
+            .filter((ch) => ch.closed === null)
             .filter((stream) =>
-              stream.categories.some((cat) => cat === props.category)
-            )
-            .filter((stream) => stream.country !== "IL").length
+              stream.categories.some(
+                (cat) => cat === props.category.toLowerCase()
+              )
+            ).length
         );
     });
     paginate(1);
@@ -211,26 +222,26 @@ function Content(props) {
               </>
             ) : props.category === "Favorites" ? (
               <>
-                {filterededChannels
-                  .slice(firstOrder, lastOrder)
-                  .map((stream) => (
-                    <Channels
-                      key={stream.id}
-                      streamInfo={stream}
-                      streamUrl={streamUrls}
-                      countries={countries}
-                    />
-                  ))}
+                {filteredChannels.slice(firstOrder, lastOrder).map((stream) => (
+                  <Channels
+                    key={stream.id}
+                    streamInfo={stream}
+                    streamUrl={streamUrls}
+                    countries={countries}
+                  />
+                ))}
               </>
             ) : (
               <>
-                {filterededChannels
+                {filteredChannels
                   .slice(firstOrder, lastOrder)
 
                   .filter(
                     (stream) =>
                       stream.categories.length &&
-                      stream.categories.some((cat) => cat === props.category)
+                      stream.categories.some(
+                        (cat) => cat === props.category.toLowerCase()
+                      )
                   )
                   .map((stream) => (
                     <Channels
