@@ -110,27 +110,22 @@ function Content(props) {
       } else {
         setFilteredChannels(
           res.data
-            .filter((stream) =>
-              stream.categories.some((cat) => cat.name === props.category)
-            )
-            .filter((stream) => stream.country !== "IL")
+            .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
+            .filter((ch) => ch.country !== "IL")
+            .filter((ch) => ch.closed === null)
         );
       }
 
       setItemsList(
         res.data
-          .filter((stream) =>
-            stream.categories.some((cat) => cat.name !== "xxx")
-          )
+          .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
           .filter((stream) => stream.country !== "IL").length
       );
 
       if (props.category === "" || props.category === "All") {
         setItemsList(
           res.data
-            .filter((stream) =>
-              stream.categories.some((cat) => cat.name !== "xxx")
-            )
+            .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
             .filter((stream) => stream.country !== "IL").length
         );
       } else if (props.category === "Favorites")
@@ -139,7 +134,7 @@ function Content(props) {
         setItemsList(
           res.data
             .filter((stream) =>
-              stream.categories.some((cat) => cat.name === props.category)
+              stream.categories.some((cat) => cat === props.category)
             )
             .filter((stream) => stream.country !== "IL").length
         );
@@ -235,9 +230,7 @@ function Content(props) {
                   .filter(
                     (stream) =>
                       stream.categories.length &&
-                      stream.categories.some(
-                        (cat) => cat.name === props.category
-                      )
+                      stream.categories.some((cat) => cat === props.category)
                   )
                   .map((stream) => (
                     <Channels
