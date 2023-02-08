@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import data from "../channels";
 
 const useStyles = makeStyles({
   contentContainer: {
@@ -88,7 +89,65 @@ function Content(props) {
 
     axios
       .get("https://iptv-org.github.io/api/streams.json")
-      .then((res) => setStreamUrls(res.data))
+      .then((res) => {
+        setStreamUrls(res.data.filter((st) => st.status !== "error"));
+        setStreams(
+          data.channels
+            .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
+            .filter((ch) => ch.country !== "IL")
+            .filter((ch) => ch.closed === null)
+        );
+
+        if (props.category !== "") setSearchedChannel("");
+        if (props.category === "Favorites") {
+          setFilteredChannels(JSON.parse(favorites));
+        } else {
+          setFilteredChannels(
+            data.channels
+              .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
+              .filter((ch) => ch.country !== "IL")
+              .filter((ch) => ch.closed === null)
+              .filter((stream) =>
+                stream.categories.some(
+                  (cat) => cat === props.category.toLowerCase()
+                )
+              )
+          );
+        }
+
+        setItemsList(
+          data.channels
+            .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
+            .filter((stream) => stream.country !== "IL")
+            .filter((ch) => ch.closed === null).length
+        );
+
+        if (props.category === "" || props.category === "All") {
+          setItemsList(
+            data.channels
+              .filter((stream) =>
+                stream.categories.some((cat) => cat !== "xxx")
+              )
+              .filter((stream) => stream.country !== "IL")
+              .filter((ch) => ch.closed === null).length
+          );
+        } else if (props.category === "Favorites")
+          setItemsList(JSON.parse(favorites).length);
+        else
+          setItemsList(
+            data.channels
+              .filter((stream) =>
+                stream.categories.some((cat) => cat !== "xxx")
+              )
+              .filter((stream) => stream.country !== "IL")
+              .filter((ch) => ch.closed === null)
+              .filter((stream) =>
+                stream.categories.some(
+                  (cat) => cat === props.category.toLowerCase()
+                )
+              ).length
+          );
+      })
       .catch((err) => console.log(err));
 
     axios
@@ -96,60 +155,6 @@ function Content(props) {
       .then((res) => setCountries(res.data))
       .catch((err) => console.log(err));
 
-    axios.get("https://iptv-org.github.io/api/channels.json").then((res) => {
-      setStreams(
-        res.data
-          .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
-          .filter((ch) => ch.country !== "IL")
-          .filter((ch) => ch.closed === null)
-      );
-
-      if (props.category !== "") setSearchedChannel("");
-      if (props.category === "Favorites") {
-        setFilteredChannels(JSON.parse(favorites));
-      } else {
-        setFilteredChannels(
-          res.data
-            .filter((ch) => ch.categories.some((cat) => cat !== "xxx"))
-            .filter((ch) => ch.country !== "IL")
-            .filter((ch) => ch.closed === null)
-            .filter((stream) =>
-              stream.categories.some(
-                (cat) => cat === props.category.toLowerCase()
-              )
-            )
-        );
-      }
-
-      setItemsList(
-        res.data
-          .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
-          .filter((stream) => stream.country !== "IL")
-          .filter((ch) => ch.closed === null).length
-      );
-
-      if (props.category === "" || props.category === "All") {
-        setItemsList(
-          res.data
-            .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
-            .filter((stream) => stream.country !== "IL")
-            .filter((ch) => ch.closed === null).length
-        );
-      } else if (props.category === "Favorites")
-        setItemsList(JSON.parse(favorites).length);
-      else
-        setItemsList(
-          res.data
-            .filter((stream) => stream.categories.some((cat) => cat !== "xxx"))
-            .filter((stream) => stream.country !== "IL")
-            .filter((ch) => ch.closed === null)
-            .filter((stream) =>
-              stream.categories.some(
-                (cat) => cat === props.category.toLowerCase()
-              )
-            ).length
-        );
-    });
     paginate(1);
     setminPageNumberLimit(0);
     setmaxPageNumberLimit(5);

@@ -82,7 +82,8 @@ function Channels(props) {
   )[0].flag;
 
   props.streamInfo["url"] = props.streamUrl.filter(
-    (stream) => stream.channel === props.streamInfo.id
+    (stream) =>
+      stream.channel === props.streamInfo.id && stream.status !== "error"
   )[0]
     ? props.streamUrl.filter(
         (stream) => stream.channel === props.streamInfo.id
