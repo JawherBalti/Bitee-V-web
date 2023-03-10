@@ -1,4 +1,4 @@
-# IPTV Web application 
+# Bitee-V web
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Bitee-V is an application that offers 3000+ free TV channels to watch online with a web and mobile version.
 
